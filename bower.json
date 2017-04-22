@@ -1,0 +1,21 @@
+{
+  "name": "jbpm-wb-prototypes",
+  "authors": [
+    "Cristiano Nicolai <cristiano.nicolai@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "patternfly": "^3.23.2"
+  }
+}
