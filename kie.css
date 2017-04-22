@@ -2,3 +2,40 @@
     padding-top: 4px;
     padding-bottom: 4px;
 }
+
+.kie-container {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+.kie-container .panel {
+    margin-bottom: 0px;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+}
+
+.kie-container .panel-heading {
+    background-color: white;
+}
+
+.kie-container .panel-body {
+    background-color: white;
+}
+
+.kie-container .panel-heading .panel-title {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.kie-container .uf-listbar-panel-header-toolbar {
+    float: right !important;
+}
+
+.pagination.pagination-right td {
+    padding: 4px;
+}
+
+.toolbar-pf-results .label a {
+    margin-right: 5px;
+}
