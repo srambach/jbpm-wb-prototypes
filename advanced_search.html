@@ -197,11 +197,13 @@
                                         <select class="selectpicker form-control filter-control" title="Filter By Process Name..." id="Process Name">
                                             <option>Evaluation</option>
                                         </select>
-                                        <input type="text" class="form-control filter-control hidden" placeholder="Filter By Process Id..." autocomplete="off" id="Process Id">
-                                        <select class="selectpicker form-control filter-control hidden" title="Filter By Version..." id="Version">
-                                            <option>1</option>
+                                        <input type="text" class="form-control filter-control hidden" placeholder="Filter By Process Id..." autocomplete="off" id="Process Id" onchange="addFilter('Process Id', this.value); this.value = '';">
+                                        <input type="text" class="form-control filter-control hidden" placeholder="Filter By Version..." autocomplete="off" id="Version">
+                                        <select class="selectpicker form-control filter-control hidden" title="Filter By State..." id="State">
+                                            <option>Active</option>
+                                            <option>Aborted</option>
+                                            <option>Completed</option>
                                         </select>
-                                        <input type="text" class="form-control filter-control hidden" placeholder="Filter By State..." autocomplete="off" id="State">
                                         <input type="text" class="form-control filter-control hidden" placeholder="Filter By Initiator..." autocomplete="off" id="Initiator">
                                         <input type="text" class="form-control bootstrap-datepicker filter-control hidden" readonly placeholder="Filter By Last Update..." id="Last Update">
                                     </div>
@@ -235,12 +237,12 @@
                                     <div>
                                         <p style="padding-right: 5px;">Active filters: </p>
                                         <ul class="list-inline" id="activeFilters">
-                                            <li>
-                                                <span class="label label-info">Process Name: Evaluation<a href="#" onclick="removeFilter(this);"><span class="pficon pficon-close"></span></a></span>
-                                            </li>
-                                            <li>
-                                                <span class="label label-info">Version: 1<a href="#" onclick="removeFilter(this);"><span class="pficon pficon-close"></span></a></span>
-                                            </li>
+                                            <!--<li>-->
+                                                <!--<span class="label label-info">Process Name: Evaluation<a href="#" onclick="removeFilter(this);"><span class="pficon pficon-close"></span></a></span>-->
+                                            <!--</li>-->
+                                            <!--<li>-->
+                                                <!--<span class="label label-info">Version: 1<a href="#" onclick="removeFilter(this);"><span class="pficon pficon-close"></span></a></span>-->
+                                            <!--</li>-->
                                         </ul>
                                         <p><a href="#" onclick="removeAllFilters();">Clear All Filters</a></p>
                                     </div>
@@ -347,7 +349,7 @@
 </div>
 <script>
     function removeFilter(element) {
-        $(element).parent().parent().remove();
+        $(element).remove();
     }
 
     function selectFilter(element) {
@@ -362,13 +364,14 @@
         });
         $('.filter-control').each(function( index ) {
             var input = $( this );
-            var selects = [ 'Version', 'Process Name' ];
+            var selects = [ 'Process Name', 'State' ];
             if(input.attr('id') == element.text){
                 if($.inArray(input.attr('id'), selects) != -1){
                     input.parent().removeClass( "hidden" );
                 } else {
                     input.removeClass( "hidden" );
                 }
+                input.focus();
             } else {
                 if($.inArray(input.attr('id'), selects) != -1){
                     input.parent().addClass( "hidden" );
@@ -377,6 +380,27 @@
                 }
             }
         });
+    }
+
+    function addFilter(name, value) {
+        var li = document.createElement( "li" );
+        var spanLabel = document.createElement( "span" );
+        spanLabel.classList.add('label');
+        spanLabel.classList.add('label-info');
+        var a = document.createElement( "a" );
+        a.href = '#';
+        a.onclick = function() {
+            removeFilter(li);
+        };
+        var spanClose = document.createElement( "span" );
+        spanClose.classList.add('pficon');
+        spanClose.classList.add('pficon-close');
+
+        spanLabel.appendChild(document.createTextNode(name + ': ' + value));
+        spanLabel.appendChild(a);
+        a.appendChild(spanClose);
+        li.appendChild(spanLabel);
+        $('#activeFilters').append(li);
     }
 
     function removeAllFilters() {
