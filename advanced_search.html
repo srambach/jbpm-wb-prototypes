@@ -197,14 +197,14 @@
                                         <select class="selectpicker form-control filter-control" title="Filter By Process Name..." id="Process Name">
                                             <option>Evaluation</option>
                                         </select>
-                                        <input type="text" class="form-control filter-control hidden" placeholder="Filter By Process Id..." autocomplete="off" id="Process Id" onchange="addFilter('Process Id', this.value); this.value = '';">
+                                        <input type="number" class="form-control filter-control hidden" placeholder="Filter By Process Id..." autocomplete="off" id="Process Id">
                                         <input type="text" class="form-control filter-control hidden" placeholder="Filter By Version..." autocomplete="off" id="Version">
                                         <select class="selectpicker form-control filter-control hidden" title="Filter By State..." id="State">
                                             <option>Active</option>
                                             <option>Aborted</option>
                                             <option>Completed</option>
                                         </select>
-                                        <input type="text" class="form-control filter-control hidden" placeholder="Filter By Initiator..." autocomplete="off" id="Initiator">
+                                        <input type="text" class="form-control filter-control hidden" placeholder="Filter By Initiator..." autocomplete="off" id="Initiator" onchange="addFilter('Initiator', this.value); this.value = '';">
                                         <input type="text" class="form-control bootstrap-datepicker filter-control hidden" readonly placeholder="Filter By Last Update..." id="Last Update">
                                     </div>
                                 </div>
@@ -409,13 +409,40 @@
 
     $('.selectpicker').selectpicker();
 
-    $('.bootstrap-datepicker').datepicker({
+    $("[id='Last Update']").datepicker({
         autoclose: true,
         format: 'dd/mm/yyyy',
         orientation: "bottom auto",
         todayBtn: "linked",
         todayHighlight: true
+    }).on('changeDate', function(e) {
+        addFilter('Last Update', e.format('dd/mm/yyyy'));
+        $("[id='Last Update']").val('');
     });
+
+    function addInputText(input){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+            addFilter(input.attr('id'), input.val());
+            input.val('');
+            input.focus();
+        }
+    }
+
+    function addSelectText(input){
+        addFilter(input.attr('id'), input.val());
+        input.val('');
+    }
+
+    $("[id='Process Id']").keypress(function(event){ addInputText($(this)); });
+
+    $("[id='Version']").keypress(function(event){ addInputText($(this)); });
+
+    $("[id='Initiator']").keypress(function(event){ addInputText($(this)); });
+
+    $("[id='Process Name']").on('changed.bs.select', function(event){ addSelectText($(this)); });
+
+    $("[id='State']").on('changed.bs.select', function(event){ addSelectText($(this)); });
 
 </script>
 </body>
