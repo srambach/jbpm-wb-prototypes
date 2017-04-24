@@ -171,9 +171,9 @@
                 <div class="panel-body">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#">Search</a></li>
-                        <li><a href="#">Active <button type="button" class="btn btn-link btn-xs" style="vertical-align: text-top;"><i class="fa fa-times"></i> </button></a></li>
-                        <li><a href="#">Completed <button type="button" class="btn btn-link btn-xs" style="vertical-align: text-top;"><i class="fa fa-times"></i> </button></a></li>
-                        <li><a href="#">Aborted <button type="button" class="btn btn-link btn-xs" style="vertical-align: text-top;"><i class="fa fa-times"></i> </button></a></li>
+                        <li id="activeTab"><a href="#">Active <button type="button" class="btn btn-link btn-xs" style="vertical-align: text-top;" onclick="removeTab('activeTab');"><i class="fa fa-times"></i> </button></a></li>
+                        <li id="completedTab"><a href="#">Completed <button type="button" class="btn btn-link btn-xs" style="vertical-align: text-top;" onclick="removeTab('completedTab');"><i class="fa fa-times"></i> </button></a></li>
+                        <li id="abortedTab"><a href="#">Aborted <button type="button" class="btn btn-link btn-xs" style="vertical-align: text-top;" onclick="removeTab('abortedTab');"><i class="fa fa-times"></i> </button></a></li>
                     </ul>
                     <div class="row toolbar-pf table-view-pf-toolbar" id="toolbar1">
                         <div class="col-sm-12">
@@ -443,6 +443,10 @@
     $("[id='Process Name']").on('changed.bs.select', function(event){ addSelectText($(this)); });
 
     $("[id='State']").on('changed.bs.select', function(event){ addSelectText($(this)); });
+
+    function removeTab(id) {
+        $('#' + id).remove();
+    }
 
 </script>
 </body>
