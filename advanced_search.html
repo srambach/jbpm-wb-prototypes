@@ -17,6 +17,8 @@
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <!-- PatternFly -->
     <script src="bower_components/patternfly/dist/js/patternfly.min.js"></script>
 
@@ -179,17 +181,29 @@
                                 <div class="form-group toolbar-pf-filter">
                                     <div class="input-group">
                                         <div class="input-group-btn">
-                                            <button type="button" class="btn btn-default dropdown-toggle" id="filter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Process Name
-                                                <span class="caret"></span></button>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="#" id="filter1">Process Id</a></li>
-                                                <li><a href="#" id="filter2">Version</a></li>
-                                                <li><a href="#" id="filter3">State</a></li>
-                                                <li><a href="#" id="filter4">Initiator</a></li>
-                                                <li><a href="#" id="filter5">Last Update</a></li>
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span id="filter">Process Name</span>
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul id="filters" class="dropdown-menu">
+                                                <li class="hidden"><a href="#" id="filter0" onclick="selectFilter(this);">Process Name</a></li>
+                                                <li><a href="#" id="filter1" onclick="selectFilter(this);">Process Id</a></li>
+                                                <li><a href="#" id="filter2" onclick="selectFilter(this);">Version</a></li>
+                                                <li><a href="#" id="filter3" onclick="selectFilter(this);">State</a></li>
+                                                <li><a href="#" id="filter4" onclick="selectFilter(this);">Initiator</a></li>
+                                                <li><a href="#" id="filter5" onclick="selectFilter(this);">Last Update</a></li>
                                             </ul>
                                         </div>
-                                        <input type="text" class="form-control" placeholder="Filter By Process Name..." autocomplete="off" id="filterInput">
+                                        <select class="selectpicker form-control filter-control" title="Filter By Process Name..." id="Process Name">
+                                            <option>Evaluation</option>
+                                        </select>
+                                        <input type="text" class="form-control filter-control hidden" placeholder="Filter By Process Id..." autocomplete="off" id="Process Id">
+                                        <select class="selectpicker form-control filter-control hidden" title="Filter By Version..." id="Version">
+                                            <option>1</option>
+                                        </select>
+                                        <input type="text" class="form-control filter-control hidden" placeholder="Filter By State..." autocomplete="off" id="State">
+                                        <input type="text" class="form-control filter-control hidden" placeholder="Filter By Initiator..." autocomplete="off" id="Initiator">
+                                        <input type="text" class="form-control bootstrap-datepicker filter-control hidden" readonly placeholder="Filter By Last Update..." id="Last Update">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -219,16 +233,16 @@
                             <div class="row toolbar-pf-results">
                                 <div class="col-sm-9">
                                     <div>
-                                        <p>Active filters: </p>
-                                        <ul class="list-inline">
+                                        <p style="padding-right: 5px;">Active filters: </p>
+                                        <ul class="list-inline" id="activeFilters">
                                             <li>
-                                                <span class="label label-info">Process Name: Evaluation<a href="#"><span class="pficon pficon-close"></span></a></span>
+                                                <span class="label label-info">Process Name: Evaluation<a href="#" onclick="removeFilter(this);"><span class="pficon pficon-close"></span></a></span>
                                             </li>
                                             <li>
-                                                <span class="label label-info">Version: 1<a href="#"><span class="pficon pficon-close"></span></a></span>
+                                                <span class="label label-info">Version: 1<a href="#" onclick="removeFilter(this);"><span class="pficon pficon-close"></span></a></span>
                                             </li>
                                         </ul>
-                                        <p><a href="#">Clear All Filters</a></p>
+                                        <p><a href="#" onclick="removeAllFilters();">Clear All Filters</a></p>
                                     </div>
                                 </div>
                                 <div class="col-sm-3 table-view-pf-select-results">
@@ -331,5 +345,54 @@
         </div>
     </div>
 </div>
+<script>
+    function removeFilter(element) {
+        $(element).parent().parent().remove();
+    }
+
+    function selectFilter(element) {
+        $('#filter').text(element.text);
+        $('#filters li').each(function( index ) {
+            var liElement = $( this );
+            if(liElement.text() == element.text){
+                liElement.addClass( "hidden" );
+            } else {
+                liElement.removeClass( "hidden" );
+            }
+        });
+        $('.filter-control').each(function( index ) {
+            var input = $( this );
+            var selects = [ 'Version', 'Process Name' ];
+            if(input.attr('id') == element.text){
+                if($.inArray(input.attr('id'), selects) != -1){
+                    input.parent().removeClass( "hidden" );
+                } else {
+                    input.removeClass( "hidden" );
+                }
+            } else {
+                if($.inArray(input.attr('id'), selects) != -1){
+                    input.parent().addClass( "hidden" );
+                } else {
+                    input.addClass( "hidden" );
+                }
+            }
+        });
+    }
+
+    function removeAllFilters() {
+        $('#activeFilters li').remove();
+    }
+
+    $('.selectpicker').selectpicker();
+
+    $('.bootstrap-datepicker').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy',
+        orientation: "bottom auto",
+        todayBtn: "linked",
+        todayHighlight: true
+    });
+
+</script>
 </body>
 </html>
