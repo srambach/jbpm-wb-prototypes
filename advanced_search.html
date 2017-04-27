@@ -183,30 +183,20 @@
                                     <div class="input-group">
                                         <div class="input-group-btn">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <span id="filter">Name</span>
+                                                <span id="filter">Id</span>
                                                 <span class="caret"></span>
                                             </button>
                                             <ul id="filters" class="dropdown-menu">
-                                                <li class="hidden"><a href="#" id="filter0" onclick="selectFilter(this);">Name</a></li>
-                                                <li><a href="#" id="filter1" onclick="selectFilter(this);">Id</a></li>
-                                                <li><a href="#" id="filter2" onclick="selectFilter(this);">Version</a></li>
-                                                <li><a href="#" id="filter3" onclick="selectFilter(this);">State</a></li>
-                                                <li><a href="#" id="filter4" onclick="selectFilter(this);">Initiator</a></li>
-                                                <li><a href="#" id="filter5" onclick="selectFilter(this);">Last Update</a></li>
+                                                <li class="hidden"><a href="#" onclick="selectFilter(this);">Id</a></li>
+                                                <li><a href="#" onclick="selectFilter(this);">Version</a></li>
+                                                <li><a href="#" onclick="selectFilter(this);">Initiator</a></li>
+                                                <li><a href="#" onclick="selectFilter(this);">Start Date</a></li>
                                             </ul>
                                         </div>
-                                        <select class="selectpicker form-control filter-control" title="Filter By Name..." id="Name">
-                                            <option>Evaluation</option>
-                                        </select>
-                                        <input type="number" class="form-control filter-control hidden" placeholder="Filter By Process Id..." autocomplete="off" id="Id">
+                                        <input type="number" class="form-control filter-control" placeholder="Filter By Process Id..." autocomplete="off" id="Id">
                                         <input type="text" class="form-control filter-control hidden" placeholder="Filter By Version..." autocomplete="off" id="Version">
-                                        <select class="selectpicker form-control filter-control hidden" title="Filter By State..." id="State">
-                                            <option>Active</option>
-                                            <option>Aborted</option>
-                                            <option>Completed</option>
-                                        </select>
                                         <input type="text" class="form-control filter-control hidden" placeholder="Filter By Initiator..." autocomplete="off" id="Initiator" onchange="addFilter('Initiator', this.value); this.value = '';">
-                                        <div class="input-group filter-control hidden" id="Last Update">
+                                        <div class="input-group filter-control hidden" id="Start Date">
                                             <input type='text' class="form-control" placeholder="Start date..." id='datetimepickerFrom' />
                                             <div class="input-group-addon">to</div>
                                             <input type='text' class="form-control" placeholder="End date..." id='datetimepickerTo' />
@@ -214,7 +204,20 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="dropdown btn-group  dropdown-kebab-pf">
+                                    <select class="selectpicker form-control" data-width="auto" title="State" id="State">
+                                        <option>Active</option>
+                                        <option>Aborted</option>
+                                        <option>Completed</option>
+                                    </select>
+                                    <select class="selectpicker form-control" data-width="auto" data-live-search="true" title="Name" id="Name">
+                                        <option>Evaluation</option>
+                                        <option>HR Process</option>
+                                        <option>Review application</option>
+                                        <option>Hardware Request</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <div class="dropdown btn-group dropdown-kebab-pf">
                                         <button class="btn btn-link dropdown-toggle" data-toggle="dropdown" type="button"><i class="fa fa-columns"></i></button>
                                         <ul class="dropdown-menu table-view-pf-colvis-menu" style="margin-left: 5px;">
                                             <li><input type="checkbox" checked><label>Id</label></li>
@@ -222,7 +225,7 @@
                                             <li><input type="checkbox" checked><label>Description</label></li>
                                             <li><input type="checkbox" checked><label>Version</label></li>
                                             <li><input type="checkbox" checked><label>Errors</label></li>
-                                            <li><input type="checkbox" checked><label>Last Update</label></li>
+                                            <li><input type="checkbox" checked><label>Start date</label></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -251,9 +254,6 @@
                                         </ul>
                                         <p><a href="#" onclick="removeAllFilters();">Clear All Filters</a></p>
                                     </div>
-                                </div>
-                                <div class="col-sm-3 table-view-pf-select-results">
-                                    <a href="#">Save Search</a>
                                 </div>
                             </div>
                         </div>
@@ -436,7 +436,7 @@
 
         var fromDate = from.date().format(dateFormat);
         var toDate = to.date().format(dateFormat);
-        addFilter('Last Update', ' Range from ' + fromDate + ' to ' + toDate);
+        addFilter('Start date', ' Range from ' + fromDate + ' to ' + toDate);
         from.clear();
         from.hide();
         to.clear();
