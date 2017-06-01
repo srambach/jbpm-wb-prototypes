@@ -172,11 +172,20 @@
                 <div class="panel-body">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#">Search</a></li>
-                        <li id="activeTab"><a href="#">Active <button type="button" class="btn btn-link btn-xs" style="vertical-align: text-top;" onclick="removeTab('activeTab');"><i class="fa fa-times"></i> </button></a></li>
-                        <li id="completedTab"><a href="#">Completed <button type="button" class="btn btn-link btn-xs" style="vertical-align: text-top;" onclick="removeTab('completedTab');"><i class="fa fa-times"></i> </button></a></li>
-                        <li id="abortedTab"><a href="#">Aborted <button type="button" class="btn btn-link btn-xs" style="vertical-align: text-top;" onclick="removeTab('abortedTab');"><i class="fa fa-times"></i> </button></a></li>
+                        <li id="activeTab"><a href="#">Active
+                            <button type="button" class="btn btn-link btn-xs" style="vertical-align: text-top;" onclick="removeTab('activeTab');">
+                                <i class="fa fa-times"></i></button>
+                        </a></li>
+                        <li id="completedTab"><a href="#">Completed
+                            <button type="button" class="btn btn-link btn-xs" style="vertical-align: text-top;" onclick="removeTab('completedTab');">
+                                <i class="fa fa-times"></i></button>
+                        </a></li>
+                        <li id="abortedTab"><a href="#">Aborted
+                            <button type="button" class="btn btn-link btn-xs" style="vertical-align: text-top;" onclick="removeTab('abortedTab');">
+                                <i class="fa fa-times"></i></button>
+                        </a></li>
                     </ul>
-                    <div class="row toolbar-pf table-view-pf-toolbar" id="toolbar1">
+                    <div class="row toolbar-pf table-view-pf-toolbar" id="toolbar1" style="border-bottom: 1px solid #d1d1d1;">
                         <div class="col-sm-12">
                             <form class="toolbar-pf-actions">
                                 <div class="form-group toolbar-pf-filter">
@@ -188,20 +197,29 @@
                                             </button>
                                             <ul id="filters" class="dropdown-menu">
                                                 <li class="hidden"><a href="#" onclick="selectFilter(this);">Id</a></li>
-                                                <li><a href="#" onclick="selectFilter(this);">Version</a></li>
+                                                <li><a href="#" onclick="selectFilter(this);">Correlation Key</a></li>
                                                 <li><a href="#" onclick="selectFilter(this);">Initiator</a></li>
-                                                <li><a href="#" onclick="selectFilter(this);">Start Date</a></li>
+                                                <li><a href="#" onclick="selectFilter(this);">Description</a></li>
                                             </ul>
                                         </div>
                                         <input type="number" class="form-control filter-control" placeholder="Filter By Process Id..." autocomplete="off" id="Id">
-                                        <input type="text" class="form-control filter-control hidden" placeholder="Filter By Version..." autocomplete="off" id="Version">
+                                        <input type="text" class="form-control filter-control hidden" placeholder="Filter By Correlation Key..." autocomplete="off" id="Correlation Key" onchange="addFilter('Correlation Key', this.value); this.value = '';">
+                                        <input type="text" class="form-control filter-control hidden" placeholder="Filter By Description..." autocomplete="off" id="Description" onchange="addFilter('Description', this.value); this.value = '';">
                                         <input type="text" class="form-control filter-control hidden" placeholder="Filter By Initiator..." autocomplete="off" id="Initiator" onchange="addFilter('Initiator', this.value); this.value = '';">
-                                        <div class="input-group filter-control hidden" id="Start Date">
-                                            <input type='text' class="form-control" placeholder="Start date..." id='datetimepickerFrom' />
-                                            <div class="input-group-addon">to</div>
-                                            <input type='text' class="form-control" placeholder="End date..." id='datetimepickerTo' />
-                                        </div>
+                                        <span class="input-group-addon hidden" id="filter-help">
+                                            <a  role="button" data-toggle="popover" data-field="help" data-trigger="hover click" data-html="true" title="" data-content="<p>Allowed wildcards are:</p>
+                                             <ul>
+                                                  <li><code>_</code> - A substitute for a single character.</li>
+                                                  <li><code>%</code> - A substitute for zero or more characters.</li>
+                                                  <li><code>[charlist]</code> - Sets and ranges of characters to match.</li>
+                                                  <li><code>[^charlist]</code> - Matches only a character NOT specified within the brackets.</li>
+                                             </ul>" data-placement="bottom" data-container="body">
+                                                                                <!--<span class="pficon pficon-info"></span>-->
+                                                <i class="fa fa-info-circle"></i>
+                                                                            </a>
+                                        </span>
                                     </div>
+
                                 </div>
                                 <div class="form-group">
                                     <select class="selectpicker form-control" data-width="auto" title="State" id="State">
@@ -217,26 +235,22 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <div class="dropdown btn-group dropdown-kebab-pf">
-                                        <button class="btn btn-link dropdown-toggle" data-toggle="dropdown" type="button"><i class="fa fa-columns"></i></button>
-                                        <ul class="dropdown-menu table-view-pf-colvis-menu" style="margin-left: 5px;">
-                                            <li><input type="checkbox" checked><label>Id</label></li>
-                                            <li><input type="checkbox" checked><label>Name</label></li>
-                                            <li><input type="checkbox" checked><label>Description</label></li>
-                                            <li><input type="checkbox" checked><label>Version</label></li>
-                                            <li><input type="checkbox" checked><label>Errors</label></li>
-                                            <li><input type="checkbox" checked><label>Start date</label></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="toolbar-pf-action-right">
-                                    <div class="form-group">
-                                        <button class="btn btn-default" type="button" disabled>
-                                            <i class="fa fa-ban"></i> Abort
-                                        </button>
-                                        <button class="btn btn-default" type="button" disabled>
-                                            <i class="fa fa-bell"></i> Signal
-                                        </button>
+                                    <div class="input-group">
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span>Start Date</span>
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li class="hidden"><a href="#">Start Date</a></li>
+                                                <li><a href="#">Last Update</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="input-group filter-control" id="Start Date">
+                                            <input type='text' class="form-control" placeholder="Start date..." id='datetimepickerFrom'/>
+                                            <div class="input-group-addon">to</div>
+                                            <input type='text' class="form-control" placeholder="End date..." id='datetimepickerTo'/>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -245,15 +259,42 @@
                                     <div>
                                         <p style="padding-right: 5px;">Active filters: </p>
                                         <ul class="list-inline" id="activeFilters">
-                                            <!--<li>-->
-                                                <!--<span class="label label-info">Name: Evaluation<a href="#" onclick="removeFilter(this);"><span class="pficon pficon-close"></span></a></span>-->
-                                            <!--</li>-->
-                                            <!--<li>-->
-                                                <!--<span class="label label-info">Version: 1<a href="#" onclick="removeFilter(this);"><span class="pficon pficon-close"></span></a></span>-->
-                                            <!--</li>-->
                                         </ul>
                                         <p><a href="#" onclick="removeAllFilters();">Clear All Filters</a></p>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+                        <div class="col-md-4">
+                            <h4>Search Results</h4>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="pull-right" style="margin-top: 5px;">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-right: 5px;">Bulk Actions
+                                        <span class="caret"></span></button>
+                                    <ul class="dropdown-menu dropdown-menu-right" role="menu" style="margin-right: 5px;">
+                                        <li class="disabled" disabled="">
+                                            <a href="javascript:;" class="disabled" disabled=""><i class="fa fa-ban fa-fw"></i> Bulk Abort</a>
+                                        </li>
+                                        <li class="disabled" disabled="">
+                                            <a href="javascript:;" class="disabled" disabled=""><i class="fa fa-bell fa-fw"></i> Bulk Signal</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="dropdown btn-group">
+                                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">
+                                        <i class="fa fa-columns"></i></button>
+                                    <ul class="dropdown-menu dropdown-menu-right table-view-pf-colvis-menu" style="margin-left: 5px;">
+                                        <li><input type="checkbox" checked><label>Id</label></li>
+                                        <li><input type="checkbox" checked><label>Name</label></li>
+                                        <li><input type="checkbox" checked><label>Description</label></li>
+                                        <li><input type="checkbox" checked><label>Version</label></li>
+                                        <li><input type="checkbox" checked><label>Errors</label></li>
+                                        <li><input type="checkbox" checked><label>Start date</label></li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -359,45 +400,51 @@
 
     function selectFilter(element) {
         $('#filter').text(element.text);
-        $('#filters li').each(function( index ) {
-            var liElement = $( this );
-            if(liElement.text() == element.text){
-                liElement.addClass( "hidden" );
+        $('#filters li').each(function (index) {
+            var liElement = $(this);
+            if (liElement.text() == element.text) {
+                liElement.addClass("hidden");
             } else {
-                liElement.removeClass( "hidden" );
+                liElement.removeClass("hidden");
             }
         });
-        $('.filter-control').each(function( index ) {
-            var input = $( this );
-            var selects = [ 'Name', 'State' ];
-            if(input.attr('id') == element.text){
-                if($.inArray(input.attr('id'), selects) != -1){
-                    input.parent().removeClass( "hidden" );
+        $('.filter-control').each(function (index) {
+            var input = $(this);
+            var selects = ['Name', 'State'];
+            if (input.attr('id') == element.text) {
+                if ($.inArray(input.attr('id'), selects) != -1) {
+                    input.parent().removeClass("hidden");
                 } else {
-                    input.removeClass( "hidden" );
+                    input.removeClass("hidden");
                 }
                 input.focus();
-            } else {
-                if($.inArray(input.attr('id'), selects) != -1){
-                    input.parent().addClass( "hidden" );
+                if(input.attr('type') == 'number'){
+                    $('#filter-help').addClass("hidden");
                 } else {
-                    input.addClass( "hidden" );
+                    $('#filter-help').removeClass("hidden");
+                }
+            } else {
+                if ($.inArray(input.attr('id'), selects) != -1) {
+                    input.parent().addClass("hidden");
+                } else {
+                    input.addClass("hidden");
                 }
             }
+
         });
     }
 
     function addFilter(name, value) {
-        var li = document.createElement( "li" );
-        var spanLabel = document.createElement( "span" );
+        var li = document.createElement("li");
+        var spanLabel = document.createElement("span");
         spanLabel.classList.add('label');
         spanLabel.classList.add('label-info');
-        var a = document.createElement( "a" );
+        var a = document.createElement("a");
         a.href = '#';
-        a.onclick = function() {
+        a.onclick = function () {
             removeFilter(li);
         };
-        var spanClose = document.createElement( "span" );
+        var spanClose = document.createElement("span");
         spanClose.classList.add('pficon');
         spanClose.classList.add('pficon-close');
 
@@ -430,7 +477,7 @@
         var from = $('#datetimepickerFrom').data("DateTimePicker");
         var to = $('#datetimepickerTo').data("DateTimePicker");
 
-        if(from.date() == null || to.date() == null){
+        if (from.date() == null || to.date() == null) {
             return;
         }
 
@@ -443,33 +490,48 @@
         to.hide();
     });
 
-    function addInputText(input){
+    function addInputText(input) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
-        if(keycode == '13'){
+        if (keycode == '13') {
             addFilter(input.attr('id'), input.val());
             input.val('');
             input.focus();
         }
     }
 
-    function addSelectText(input){
+    function addSelectText(input) {
         addFilter(input.attr('id'), input.val());
         input.val('');
     }
 
-    $("[id='Id']").keypress(function(event){ addInputText($(this)); });
+    $("[id='Id']").keypress(function (event) {
+        addInputText($(this));
+    });
 
-    $("[id='Version']").keypress(function(event){ addInputText($(this)); });
+    $("[id='Version']").keypress(function (event) {
+        addInputText($(this));
+    });
 
-    $("[id='Initiator']").keypress(function(event){ addInputText($(this)); });
+    $("[id='Initiator']").keypress(function (event) {
+        addInputText($(this));
+    });
 
-    $("[id='Name']").on('changed.bs.select', function(event){ addSelectText($(this)); });
+    $("[id='Name']").on('changed.bs.select', function (event) {
+        addSelectText($(this));
+    });
 
-    $("[id='State']").on('changed.bs.select', function(event){ addSelectText($(this)); });
+    $("[id='State']").on('changed.bs.select', function (event) {
+        addSelectText($(this));
+    });
 
     function removeTab(id) {
         $('#' + id).remove();
     }
+
+    // Initialize Popovers
+    $(document).ready(function() {
+        $('[data-toggle=popover]').popovers()
+    });
 
 </script>
 </body>
