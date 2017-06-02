@@ -16,6 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "patternfly": "^3.23.2"
+    "patternfly": "^3.23.2",
+    "bootstrap-daterangepicker": "^2.1.25"
   }
 }

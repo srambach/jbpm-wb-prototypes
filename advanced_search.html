@@ -6,6 +6,8 @@
 
     <title>KIE Workench</title>
 
+    <link href="bower_components/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" media="screen, print">
+
     <!-- PatternFly Styles -->
     <link href="bower_components/patternfly/dist/css/patternfly.min.css" rel="stylesheet" media="screen, print">
     <link href="bower_components/patternfly/dist/css/patternfly-additions.min.css" rel="stylesheet" media="screen, print">
@@ -19,7 +21,7 @@
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     <script src="bower_components/moment/min/moment.min.js"></script>
-    <script src="bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
     <!-- PatternFly -->
     <script src="bower_components/patternfly/dist/js/patternfly.min.js"></script>
 
@@ -234,7 +236,7 @@
                                         <option>Hardware Request</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" style="width: 25%;">
                                     <div class="input-group">
                                         <div class="input-group-btn">
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -246,11 +248,9 @@
                                                 <li><a href="#">Last Update</a></li>
                                             </ul>
                                         </div>
-                                        <div class="input-group filter-control" id="Start Date">
-                                            <input type='text' class="form-control" placeholder="Start date..." id='datetimepickerFrom'/>
-                                            <div class="input-group-addon">to</div>
-                                            <input type='text' class="form-control" placeholder="End date..." id='datetimepickerTo'/>
-                                        </div>
+                                        <!--<div class="filter-control" id="Start Date">-->
+                                            <input type='text' class="form-control" placeholder="Start date range..." id='datetimepicker'/>
+                                        <!--</div>-->
                                     </div>
                                 </div>
                             </form>
@@ -461,34 +461,56 @@
 
     $('.selectpicker').selectpicker();
 
-    var dateFormat = 'DD/MM/YYYY h:mm:ss a';
+    var dateFormat = 'lll';
 
-    $('#datetimepickerFrom').datetimepicker({
-        format: dateFormat
-    });
-    $('#datetimepickerTo').datetimepicker({
-        format: dateFormat,
-        useCurrent: false //Important! See issue #1075
-    });
-    $("#datetimepickerFrom").on("dp.change", function (e) {
-        $('#datetimepickerTo').data("DateTimePicker").minDate(e.date);
-    });
-    $("#datetimepickerTo").on("dp.change", function (e) {
-        var from = $('#datetimepickerFrom').data("DateTimePicker");
-        var to = $('#datetimepickerTo').data("DateTimePicker");
+    var start = moment().hours(0).minutes(0).seconds(0).subtract(6, 'days');
+    var end = moment();
 
-        if (from.date() == null || to.date() == null) {
-            return;
+//    function cb(start, end) {
+//        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+//    }
+
+    $('#datetimepicker').daterangepicker({
+        startDate: start,
+        endDate: end,
+        timePicker: true,
+        timePickerIncrement: 30,
+        locale: {
+            format: 'lll'
+        },
+        ranges: {
+            'Today': [moment().hours(0).minutes(0).seconds(0), moment()],
+            'Yesterday': [moment().hours(0).minutes(0).seconds(0).subtract(1, 'days'), moment().subtract(1, 'days').hours(24).minutes(0).seconds(0)],
+            'Last 7 Days': [start, end],
+            'Last 30 Days': [moment().hours(0).minutes(0).seconds(0).subtract(30, 'days'), moment()],
+            'This Month': [moment().hours(0).minutes(0).seconds(0).startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().hours(0).minutes(0).seconds(0).subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
-
-        var fromDate = from.date().format(dateFormat);
-        var toDate = to.date().format(dateFormat);
-        addFilter('Start date', ' Range from ' + fromDate + ' to ' + toDate);
-        from.clear();
-        from.hide();
-        to.clear();
-        to.hide();
+    }, function(start, end, label) {
+        console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+        console.log('test label: ' + end.from(start, true));
+        addFilter('Start date', ' Range from ' + start.format(dateFormat) + ' to ' + end.format(dateFormat));
     });
+
+//    $("#datetimepickerFrom").on("dp.change", function (e) {
+//        $('#datetimepickerTo').data("DateTimePicker").minDate(e.date);
+//    });
+//    $("#datetimepickerTo").on("dp.change", function (e) {
+//        var from = $('#datetimepickerFrom').data("DateTimePicker");
+//        var to = $('#datetimepickerTo').data("DateTimePicker");
+//
+//        if (from.date() == null || to.date() == null) {
+//            return;
+//        }
+//
+//        var fromDate = from.date().format(dateFormat);
+//        var toDate = to.date().format(dateFormat);
+//        addFilter('Start date', ' Range from ' + fromDate + ' to ' + toDate);
+//        from.clear();
+//        from.hide();
+//        to.clear();
+//        to.hide();
+//    });
 
     function addInputText(input) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -508,7 +530,7 @@
         addInputText($(this));
     });
 
-    $("[id='Version']").keypress(function (event) {
+    $("[id='Correlation Key']").keypress(function (event) {
         addInputText($(this));
     });
 
