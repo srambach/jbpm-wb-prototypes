@@ -471,12 +471,14 @@
 //    }
 
     $('#datetimepicker').daterangepicker({
+        autoUpdateInput: false,
         startDate: start,
         endDate: end,
         timePicker: true,
         timePickerIncrement: 30,
         locale: {
-            format: 'lll'
+            format: 'lll',
+            customRangeLabel: 'Custom Date Range'
         },
         ranges: {
             'Today': [moment().hours(0).minutes(0).seconds(0), moment()],
