@@ -395,6 +395,7 @@
 </div>
 <script>
     function removeFilter(element) {
+        $(element).popover('destroy');
         $(element).remove();
     }
 
@@ -434,7 +435,7 @@
         });
     }
 
-    function addFilter(name, value) {
+    function addFilter(name, value, tooltip) {
         var li = document.createElement("li");
         var spanLabel = document.createElement("span");
         spanLabel.classList.add('label');
@@ -453,6 +454,15 @@
         a.appendChild(spanClose);
         li.appendChild(spanLabel);
         $('#activeFilters').append(li);
+        if(name == 'Start date range'){
+            li.setAttribute('data-toggle', 'popover');
+            $(li).popover({
+                placement: 'top',
+                trigger: 'click hover',
+                html: true,
+                content: tooltip
+            });
+        }
     }
 
     function removeAllFilters() {
@@ -485,34 +495,15 @@
             'Yesterday': [moment().hours(0).minutes(0).seconds(0).subtract(1, 'days'), moment().subtract(1, 'days').hours(24).minutes(0).seconds(0)],
             'Last 7 Days': [start, end],
             'Last 30 Days': [moment().hours(0).minutes(0).seconds(0).subtract(30, 'days'), moment()],
-            'This Month': [moment().hours(0).minutes(0).seconds(0).startOf('month'), moment().endOf('month')],
+            'This Month': [moment().hours(0).minutes(0).seconds(0).startOf('month'), moment()],
             'Last Month': [moment().hours(0).minutes(0).seconds(0).subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
     }, function(start, end, label) {
         console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
         console.log('test label: ' + end.from(start, true));
-        addFilter('Start date', ' Range from ' + start.format(dateFormat) + ' to ' + end.format(dateFormat));
+        var tooltipText = 'From: ' + start.format(dateFormat) + ' <br>To: ' + end.format(dateFormat);
+        addFilter('Start date range', end.from(start, true), tooltipText);
     });
-
-//    $("#datetimepickerFrom").on("dp.change", function (e) {
-//        $('#datetimepickerTo').data("DateTimePicker").minDate(e.date);
-//    });
-//    $("#datetimepickerTo").on("dp.change", function (e) {
-//        var from = $('#datetimepickerFrom').data("DateTimePicker");
-//        var to = $('#datetimepickerTo').data("DateTimePicker");
-//
-//        if (from.date() == null || to.date() == null) {
-//            return;
-//        }
-//
-//        var fromDate = from.date().format(dateFormat);
-//        var toDate = to.date().format(dateFormat);
-//        addFilter('Start date', ' Range from ' + fromDate + ' to ' + toDate);
-//        from.clear();
-//        from.hide();
-//        to.clear();
-//        to.hide();
-//    });
 
     function addInputText(input) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
