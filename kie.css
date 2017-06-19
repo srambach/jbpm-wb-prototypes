@@ -39,3 +39,61 @@
 .toolbar-pf-results .label a {
     margin-right: 5px;
 }
+
+/* *** Added for filter list handling */
+
+.taglist {
+  /*background-color: lightblue;*/
+  position: relative;
+  flex-wrap: wrap;
+}
+/* necessary for overcoming specificity */
+.toolbar-pf-results .taglist {
+  display: inline-flex;
+}
+
+.taglist--overflowing {
+  padding-right: 6em; /* should be the width of the show more link */
+}
+.taglist--overflowing .taglist__viewmore {
+  display: inline;
+  /*background-color: lightcoral;*/
+}
+
+.taglist--overflowing .taglist__viewmore:before {
+    content: '...view less'
+}
+
+.taglist--collapsed {
+  max-height: 26px; /* should be @grid-gutter-width until the @screen-sm-min breakpoint where it goes to @grid-gutter-width/1.5 */
+  overflow: hidden;
+  padding-right: 6em;/* space for the taglist__viewmore link */
+}
+
+@media (min-width: 768px) { /* should be screen-sm-min */
+  .taglist--collapsed {
+    max-height: 40px; /* should be @grid-gutter-width */
+  }
+}
+
+.taglist--collapsed .taglist__viewmore {
+  position: absolute;
+  right: 0;
+  top: 0;
+  /*background-color: bisque;*/
+}
+.taglist--collapsed .taglist__viewmore:before {
+  content: '...view more';
+}
+
+
+.taglist__viewmore {
+  /*background-color: beige;*/
+  width: 6em; /* right padding of container should be the same */
+  display: none;
+  order: 1000; /* give it a big number to be always last */
+}
+
+.taglist__viewmore:before {
+  content: '';
+  }

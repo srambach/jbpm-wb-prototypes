@@ -255,10 +255,13 @@
                                 </div>
                             </form>
                             <div class="row toolbar-pf-results">
-                                <div class="col-sm-9">
-                                    <div>
+                                <div class="col-sm-12">
+                                    <div class="">
                                         <p style="padding-right: 5px;">Active filters: </p>
-                                        <ul class="list-inline" id="activeFilters">
+                                        <ul class="list-inline taglist taglist--overflowing taglist--collapsed" id="activeFilters">
+                                          <!-- this is shown when the list overflows -->
+                                          <span class="taglist__viewmore"></span>
+
                                         </ul>
                                         <p><a href="#" onclick="removeAllFilters();">Clear All Filters</a></p>
                                     </div>
